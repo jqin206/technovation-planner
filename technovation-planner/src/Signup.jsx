@@ -48,7 +48,6 @@ const Signup = () => {
                     Submission Deadline
                     <input type="date" />
                 </label>
-                
                 <button type="submit">Create Account</button>
             </form>
         </div>
