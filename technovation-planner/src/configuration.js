@@ -1,15 +1,25 @@
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import  { getFirestore, collection, addDoc } from "firebase/firestore"; 
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import {getFirestore, collection, addDoc } from 'firebase/firestore';
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyAx8LwtLKNzfrMtJ4BtaXWGoMTnQk3i7Vs",
+  authDomain: "technovation-planner.firebaseapp.com",
+  databaseURL: "https://technovation-planner-default-rtdb.firebaseio.com",
+  projectId: "technovation-planner",
+  storageBucket: "technovation-planner.firebasestorage.app",
+  messagingSenderId: "703990993221",
+  appId: "1:703990993221:web:01704b7fff6fabfb4b2e2c",
+  measurementId: "G-TFZHKP8Z6E"
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
-export { db };
+export { auth, db, collection, addDoc, createUserWithEmailAndPassword };
+
