@@ -5,7 +5,7 @@ import logo from './assets/logo.png';
 
 export default function NavBar() {
     const location = useLocation();
-    const hideLinksOn = ["/signup", "/login"];
+    const hideLinksOn = ["/","/signup", "/login"];
     const hideLinks = hideLinksOn.includes(location.pathname);
     return (
         <nav className="navbar">

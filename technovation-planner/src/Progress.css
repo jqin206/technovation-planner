@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
+
+.progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 100px;
+}
+
+.units-container {
+    width: 95vw;
+    margin: 0 auto;
+    align-self: flex-start;
+    padding: 0 2rem;
+    padding-bottom: 50px;
+}
+
+p.units {
+    font-family: 'Bungee';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 48px;
+    color: #445474;
+    margin: 0 0 0.5rem 0;
+    padding-left: 1rem;
+    text-align: left;
+
+}
+
+.unit-header {
+    width: 100%;
+}
+
+.unit1, .unit5, .unit9 {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 150px;
+    border-radius: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; 
+    gap: 1rem;
+    padding: 1rem;
+    background: #E5F2FF;
+    border: 4px solid #5EA0DF;
+}
+
+.unit2, .unit6, .unit10 {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 150px;
+    border-radius: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; 
+    gap: 1rem;
+    padding: 1rem;
+    background: #FCDCEE;
+    border: 4px solid #EC0A8C;
+}
+
+.unit3, .unit7, .unit11 {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 150px;
+    border-radius: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; 
+    gap: 1rem;
+    padding: 1rem;
+    background: #E5FFDE;
+    border: 4px solid #6BBF55;
+}
+
+.unit4, .unit8, .unit12 {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 150px;
+    border-radius: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; 
+    gap: 1rem;
+    padding: 1rem;
+    background: #FFF8D8;
+    border: 4px solid #F0C91D;
+}
