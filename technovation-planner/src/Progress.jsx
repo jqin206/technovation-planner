@@ -123,7 +123,7 @@ export default function Progress() {
         const visibleMods = mods.slice(startIdx, startIdx + itemsPerPage);
         const unitNumber = unit.split(" ")[1];  // Extract the number part of "Unit X"
         // Create the dynamic class name based on the unit number
-        const unitClassName = `unit${unitNumber}`;
+        const unitClassName = `unit${unitNumber}m`;
 
         return (
           <div key={unit}>
