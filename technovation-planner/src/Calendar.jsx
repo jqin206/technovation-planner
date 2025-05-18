@@ -269,19 +269,16 @@ const lessons = useMemo(() => {
 
 export default Calendar;
 
-
-/*import React, { useState, useEffect, useMemo } from 'react';
+/*
+import React, { useState, useEffect, useMemo } from 'react';
 import './Calendar.css';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth} from "./configuration";
-<<<<<<< HEAD
 import {lessons} from './senior.js';
-=======
 import beginner_curriculum from './beginner.json'
 import junior_curriculum from './junior.json'
 import senior_curriculum from './senior.json'
 
->>>>>>> 5fcc1b144e2ad5900de06c710b82b9b8321d851e
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -382,7 +379,7 @@ const Calendar = () => {
   const lessonOnDay = scheduledLessons.filter(
     (l) => day && l.date.toDateString() === day.toDateString()
   );
-}
+})
   return (
 
     <div className="calendar">
@@ -433,5 +430,5 @@ const Calendar = () => {
       </div>
     </div>
   );
-})}
+}}
 export default Calendar; */
