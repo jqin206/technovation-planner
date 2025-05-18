@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './Calendar.css';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth} from "./configuration";
+import beginner_curriculum from './beginner.json'
+import junior_curriculum from './junior.json'
+import senior_curriculum from './senior.json'
+
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
