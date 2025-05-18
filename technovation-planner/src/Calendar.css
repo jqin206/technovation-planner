@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
+
+.calendar-frame {
+  width: 90%;
+  min-height: 627px;
+  height: auto;
+  margin-top: 50px;
+  box-sizing: border-box;
+
+    background: #F9F8F8;
+    /* dark gray */
+    border: 4px solid #445474;
+    border-radius: 35px;
+    margin-bottom: 50px;
+    padding: 30px 50px 30px 50px;
+}
+
+.calendar-header button {
+  background-color: #445474;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.calendar-header button:hover {
+  background-color: #6E737A;
+}
+
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 30px;
+}
+
+.calendar-day-names {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: 100px;
+}
+
+.calendar-day {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #eee;
+}
+.calendar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.monthName {
+    font-family: 'Bungee';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 58px;
+    text-align: center;
+
+    /* dark gray */
+    color: #445474;
+}
+
+h1.countdown  {
+    justify-content: center;
+    font-family: 'Bungee Inline';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 80px;
+    line-height: 1px;
+    margin-bottom: 0px;
+    margin-top: 75px;
+    padding: 0;
+
+    color: #0474D3;
+}
+
+.inline-text {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center; 
+  gap: 2rem;
+  margin: 25px ;
+}
+
+@media (max-width: 600px) {
+  .inline-text {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.inline-text h2{
+    margin: 0;
+    min-width: 100px;
+    font-size: clamp(48px, 6vw, 80px);
+} 
+.inline-text p {
+  margin: 0;
+  min-width: 100px;
+  font-size: clamp(24px, 6vw, 36px); /* responsive font size */
+}
+
+
+h2 {
+    font-family: 'Bungee Inline';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 90px;
+    line-height: 1px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+
+    /* pink */
+    color: #EC0A8C;
+}
+
+p {
+    text-align: center;
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1px;
+    padding: 0;
+    margin: 0;
+
+    /* dark gray */
+    color: #445474;
+}

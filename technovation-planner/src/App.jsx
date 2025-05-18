@@ -5,6 +5,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Signup from './Signup'
 import NavBar from './NavBar'
+import Calendar from './Calendar'
+import Account from './Account'
 
 const App = () => {
   return (
@@ -12,6 +14,8 @@ const App = () => {
       <NavBar/>
       <Routes>
         <Route path="/signup" element={<Signup />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </div>
   );
