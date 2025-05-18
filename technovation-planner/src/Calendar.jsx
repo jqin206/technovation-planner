@@ -70,7 +70,9 @@ const Calendar = () => {
     <div className="calendar">
         <h1 className= "countdown">Countdown!</h1>
         <div className="inline-text">
-            <h2>{daysDiff}</h2>
+            <h2>
+              {daysDiff ? daysDiff : '0'}
+            </h2>
             <p>days till project submission</p>
         </div>
         <div className="calendar-frame">
