@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Calendar.css';
-
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db, auth} from "./configuration";
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -38,12 +39,38 @@ const Calendar = () => {
   const daysInMonth = getCalendarGrid(currentDate);
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+  const user = auth.currentUser;
+
+  const [start, setStart] = useState("");
+  const [submission, setSubmission] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = auth.currentUser;
+    if (!user) return;
+
+    const q = query(collection(db, "users"), where("email", "==", user.email));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const data = querySnapshot.docs[0].data();
+      setStart(data.start);
+      setSubmission(data.submission);
+    }
+    };
+
+    fetchData();
+  }, []);
+
+  // Calculate the difference in days between the current date and the project submission date
+  const daysDiff = Math.ceil((new Date(submission) - new Date()) / (1000 * 60 * 60 * 24));
+
   return (
 
     <div className="calendar">
         <h1 className= "countdown">Countdown!</h1>
         <div className="inline-text">
-            <h2>100</h2>
+            <h2>{daysDiff}</h2>
             <p>days till project submission</p>
         </div>
         <div className="calendar-frame">

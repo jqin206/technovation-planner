@@ -1,9 +1,7 @@
 import './Account.css';
 import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "./configuration";
-
-
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db, auth} from "./configuration";
   
 export default function Account() {
     const [username, setName] = useState("");
@@ -13,16 +11,20 @@ export default function Account() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
+      const user = auth.currentUser;
+          if (!user) return;
+      
+          const q = query(collection(db, "users"), where("email", "==", user.email));
+          const querySnapshot = await getDocs(q);
+      
+          if (!querySnapshot.empty) {
+            const data = querySnapshot.docs[0].data();
         setName(data.username);
         setTeam(data.team);
         setEmail(data.email);
         setDivision(data.division);
-      });
+      };
     };
-
     fetchData();
   }, []);
 
