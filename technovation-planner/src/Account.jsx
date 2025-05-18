@@ -1,7 +1,9 @@
 import './Account.css';
 import React, { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { db, auth} from "./configuration";
+import { db, auth } from "./configuration";
+import { onAuthStateChanged } from "firebase/auth"
+import { useNavigate } from 'react-router-dom';
   
 export default function Account() {
     const [username, setName] = useState("");
@@ -28,6 +30,19 @@ export default function Account() {
     fetchData();
   }, []);
 
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe(); // Clean up subscription
+  }, [auth]);
+
+  const buttonText = user ? 'Logout' : 'Login';
+
   return (
     <div className="account">
       <h1 className="countdown">My Account</h1>
@@ -50,7 +65,19 @@ export default function Account() {
                 <p className="info">Division:</p>
                 <p className="field">{division}</p>
             </div>
-        </div> 
+        </div>
+        <div>
+        <button className='button' onClick={() => {
+          if (user) {
+            auth.signOut();
+            navigate('/login')
+          } else {
+            navigate('/login')
+        }
+    }}>
+      {buttonText}
+    </button>
+        </div>
     </div>
   );
 }
