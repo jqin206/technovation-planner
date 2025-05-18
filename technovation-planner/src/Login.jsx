@@ -17,8 +17,21 @@ function Login() {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             navigate('/calendar')
-        } catch (err) {
-            setError(err.message);
+        } catch (error) {
+            switch (error.code) {
+                case 'auth/user-not-found':
+                case 'auth/invalid-email':
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential':
+                    setError('Incorrect email or password.');
+                    break;
+                case 'auth/too-many-requests':
+                    setError('Too many login attempts. Please try again later.');
+                    break;
+                default:
+                    setError('An unexpected error occurred. Please try again.');
+                    break;
+            }
         }
     };
 
@@ -27,7 +40,6 @@ function Login() {
             <div className = 'box_login'>
             <h1> Login </h1>
             <form className='form_login' onSubmit={handleSubmit}>
-                {error && <p>{error}</p>}
                 <label> 
                     Email Address
                     <input 
@@ -56,6 +68,7 @@ function Login() {
                         Login
                 </button>
                 <Link className="link" to="/signup">No account? Create one!</Link>
+                {error && <p className='error'>{error}</p>}
             </form>
         </div>
     </div>
