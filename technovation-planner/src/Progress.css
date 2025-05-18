@@ -11,11 +11,82 @@
 }
 
 .units-container {
+    position: relative;
+    display: flex;
     width: 95vw;
     margin: 0 auto;
     align-self: flex-start;
     padding: 0 2rem;
     padding-bottom: 50px;
+    margin-bottom: 2rem;
+    flex-direction: column;
+}
+
+.unit-modules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.modules {
+    position: relative;
+    width: 375px;
+    height: 125px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center; 
+    padding: 10px;
+
+    box-sizing: border-box;
+    /* grayish white */
+    background: #EBE9E5;
+    /* dark gray */
+    border: 2px solid #445474;
+    border-radius: 25px;
+}
+
+/* Style for the circular checkbox */
+.modules input[type="checkbox"] {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;  /* Size of the checkbox */
+    height: 20px;
+    border-radius: 50%;  /* Makes it circular */
+    appearance: none; /* Remove default checkbox appearance */
+    border: 2px solid #445474; /* Border color */
+    background-color: white; /* Background color */
+    cursor: pointer; /* Show pointer cursor when hovering over the checkbox */
+    transition: background-color 0.2s ease, border-color 0.2s ease; /* Smooth transition for the background and border color */
+}
+
+/* When the checkbox is checked, change the background */
+.modules input[type="checkbox"]:checked {
+    background-color: #4CAF50; /* Green background when checked */
+    border-color: #4CAF50; /* Green border when checked */
+}
+
+/* Style for the checkbox when it is checked */
+.modules input[type="checkbox"]:checked::after {
+    content: "✔"; /* Checkmark symbol */
+    color: white; /* Checkmark color */
+    font-size: 14px;
+    position: absolute;
+    top: 2px;  /* Slight adjustment to center the checkmark */
+    left: 5px; /* Slight adjustment to center the checkmark */
+}
+
+.module-title {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 22px;
+
+    color: #000000;
 }
 
 p.units {
@@ -31,20 +102,41 @@ p.units {
 
 }
 
+.progress-bar-container {
+    width: 100%; /* Or whatever width you prefer */
+    max-width: 1350px;
+    height: 25px;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-left: 20px;
+    flex-shrink: 0;
+  }
+  
+  .progress-bar {
+    height: auto;
+    background-color: #4caf50;
+    transition: width 0.3s ease-in-out;
+  }
+
 .unit-header {
+    display: flex;
     width: 100%;
+    margin-bottom: 1rem;
+    align-items: center;
+    padding-right: 20px; /* Optional: for spacing inside the unit header */
 }
 
 .unit1m, .unit5m, .unit9m {
     box-sizing: border-box;
-    width: 100%;
+    width: 95vw;
     height: auto;
     min-height: 150px;
     border-radius: 35px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center; 
+    justify-content: flex-start;
+    align-items: flex-start; 
     gap: 1rem;
     padding: 1rem;
     background: #E5F2FF;
@@ -53,14 +145,14 @@ p.units {
 
 .unit2m, .unit6m, .unit10m {
     box-sizing: border-box;
-    width: 100%;
+    width: 95vw;
     height: auto;
     min-height: 150px;
     border-radius: 35px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center; 
+    justify-content: flex-start;
+    align-items: flex-start; 
     gap: 1rem;
     padding: 1rem;
     background: #FCDCEE;
@@ -69,14 +161,14 @@ p.units {
 
 .unit3m, .unit7m, .unit11m {
     box-sizing: border-box;
-    width: 100%;
+    width: 95vw;
     height: auto;
     min-height: 150px;
     border-radius: 35px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center; 
+    justify-content: flex-start;
+    align-items: flex-start; 
     gap: 1rem;
     padding: 1rem;
     background: #E5FFDE;
@@ -85,16 +177,42 @@ p.units {
 
 .unit4m, .unit8m, .unit12m {
     box-sizing: border-box;
-    width: 100%;
+    width: 95vw;
     height: auto;
     min-height: 150px;
     border-radius: 35px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center; 
+    justify-content: flex-start;
+    align-items: flex-start; 
     gap: 1rem;
     padding: 1rem;
     background: #FFF8D8;
     border: 4px solid #F0C91D;
+}
+
+/* Pagination buttons on the sides of the unit container */
+.pagination-buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 0 1rem; /* Padding on the left and right to avoid touching the edges */
+    margin-top: auto; /* Push the pagination buttons to the bottom */
+}
+
+.pagination-buttons button {
+    padding: 0.5rem 0.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination-button.prev {
+  left: -2rem;
+}
+
+.pagination-button.next {
+  right: -2rem;
 }

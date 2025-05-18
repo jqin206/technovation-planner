@@ -23,7 +23,7 @@ function Signup() {
                 team: team,
                 division: division,
                 start: start,
-                submission: submission
+                submission: submission,
             });
             // Optionally, redirect the user or show a success message
             navigate('/calendar'); 

@@ -274,7 +274,14 @@ export default Calendar;
 import './Calendar.css';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth} from "./configuration";
+<<<<<<< HEAD
 import {lessons} from './senior.js';
+=======
+import beginner_curriculum from './beginner.json'
+import junior_curriculum from './junior.json'
+import senior_curriculum from './senior.json'
+
+>>>>>>> 5fcc1b144e2ad5900de06c710b82b9b8321d851e
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
