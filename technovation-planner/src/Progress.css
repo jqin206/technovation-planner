@@ -35,7 +35,7 @@ p.units {
     width: 100%;
 }
 
-.unit1, .unit5, .unit9 {
+.unit1m, .unit5m, .unit9m {
     box-sizing: border-box;
     width: 100%;
     height: auto;
@@ -51,7 +51,7 @@ p.units {
     border: 4px solid #5EA0DF;
 }
 
-.unit2, .unit6, .unit10 {
+.unit2m, .unit6m, .unit10m {
     box-sizing: border-box;
     width: 100%;
     height: auto;
@@ -67,7 +67,7 @@ p.units {
     border: 4px solid #EC0A8C;
 }
 
-.unit3, .unit7, .unit11 {
+.unit3m, .unit7m, .unit11m {
     box-sizing: border-box;
     width: 100%;
     height: auto;
@@ -83,7 +83,7 @@ p.units {
     border: 4px solid #6BBF55;
 }
 
-.unit4, .unit8, .unit12 {
+.unit4m, .unit8m, .unit12m {
     box-sizing: border-box;
     width: 100%;
     height: auto;

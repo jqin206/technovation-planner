@@ -12,7 +12,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 1</p>
             </div>
-            <div className="unit1">
+            <div className="unit1m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -23,7 +23,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 2</p>
             </div>
-            <div className="unit2">
+            <div className="unit2m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -34,7 +34,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 3</p>
             </div>
-            <div className="unit3">
+            <div className="unit3m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -45,7 +45,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 4</p>
             </div>
-            <div className="unit4">
+            <div className="unit4m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -56,7 +56,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 5</p>
             </div>
-            <div className="unit5">
+            <div className="unit5m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -67,7 +67,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 6</p>
             </div>
-            <div className="unit6">
+            <div className="unit6m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -78,7 +78,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 7</p>
             </div>
-            <div className="unit7">
+            <div className="unit7m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -89,7 +89,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 8</p>
             </div>
-            <div className="unit8">
+            <div className="unit8m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -100,7 +100,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 9</p>
             </div>
-            <div className="unit9">
+            <div className="unit9m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -111,7 +111,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 10</p>
             </div>
-            <div className="unit10">
+            <div className="unit10m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -122,7 +122,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 11</p>
             </div>
-            <div className="unit11">
+            <div className="unit11m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
@@ -133,7 +133,7 @@ export default function Progress() {
             <div className="unit-header">
                 <p className="units">Unit 12</p>
             </div>
-            <div className="unit12">
+            <div className="unit12m">
                 <p className="modules">Mod 1</p>
                 <p className="modules">Mod 2</p>
                 <p className="modules">Mod 3</p>
