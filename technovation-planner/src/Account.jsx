@@ -1,28 +1,52 @@
-import React from 'react';
 import './Account.css';
+import React, { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./configuration";
 
+
+  
 export default function Account() {
+    const [username, setName] = useState("");
+    const [team, setTeam] = useState("");
+    const [email, setEmail] = useState("");
+    const [division, setDivision] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        setName(data.username);
+        setTeam(data.team);
+        setEmail(data.email);
+        setDivision(data.division);
+      });
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="account">
       <h1 className="countdown">My Account</h1>
         <div className="inline1">
             <div className="username">
                 <p className="info">Username:</p>
-                <p className="field">roomate</p>
+                <p className="field">{username}</p>
             </div>  
             <div className="team"> 
                 <p className="info">Team:</p> 
-                <p className="field">wolf pack</p>
+                <p className="field">{team}</p>
             </div>
         </div> 
         <div className="inline2">
             <div className="email">  
                 <p className="info">Email Address:</p>
-                <p className="field">pack@ucla.edu</p>
+                <p className="field">{email}</p>
             </div>
             <div className="division">  
                 <p className="info">Division:</p>
-                <p className="field">pillow fighting</p>
+                <p className="field">{division}</p>
             </div>
         </div> 
     </div>
