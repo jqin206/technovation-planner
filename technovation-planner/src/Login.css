@@ -18,24 +18,24 @@ body, html, #root {
 }
 
 
-.box_signup {
+.box_login {
     display: flex;
     flex-direction: column;
     justify-content: center; 
     align-items: center;
     margin: 0 auto;
-    padding-top: 40px;
+    padding-top: 50px;
     padding-bottom: 100px;
 }
 
-.form_signup {
+.form_login {
     display: flex;
     flex-direction: column; /* Stack inputs vertically */
     gap: 10px; /* Space between form elements */
     padding: 24px;
     box-sizing: border-box;
     width: 660px;
-    height: 1150px;
+    height: 500px;
     background: #E5F2FF;
     border: 4px solid #5EA0DF;
     border-radius: 35px;
@@ -70,9 +70,7 @@ label {
 }
 
 input[type="email"],
-input[type="text"],
-input[type="password"],
-input[type="date"] {
+input[type="password"] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -83,28 +81,6 @@ input[type="date"] {
     box-sizing: border-box;
 
     font-size: 20px;
-  }
-
-  input[type="radio"] {
-    margin-right: 5px;
-}
-
-/* Group the radio items vertically */
-.radio-group {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    gap: 10px; /* Space between the radio items */
-}
-
-/* Style each radio item to align the button and the label horizontally */
-.radio-item {
-    display: flex; /* Align radio button and label horizontally */
-    align-items: center; /* Ensure the radio button and label are centered vertically */
-}
-
-/* Optional: Add space between the radio button and its label */
-.radio-item input[type="radio"] {
-    margin-right: 10px; /* Space between radio button and label text */
 }
 
 .button {
@@ -130,5 +106,22 @@ input[type="date"] {
     text-align: center;
 }
 
+.link {
+    font-family: 'Archivo', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 56px;
 
+    /* dark gray */
+    color: #445474;
+    text-decoration: none;
 
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.link:hover {
+    color: #0474d3;
+    text-decoration: underline;
+}
