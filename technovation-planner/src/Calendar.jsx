@@ -209,7 +209,7 @@ const lessons = useMemo(() => {
 
   return (
     <div className="calendar">
-        <h1 className= "countdown">Countdown!</h1>
+        <h1 className= "countdown">COUNTDOWN!</h1>
         <div className="inline-text">
             <h2>
               {daysDiff ? daysDiff : '0'}

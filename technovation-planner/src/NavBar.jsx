@@ -21,13 +21,16 @@ export default function NavBar() {
             {!hideLinks && (
                 <ul className="navbar_links">
                     <li>
-                        <Link to="/Calendar">My Calendar</Link>
+                        <Link to="/Calendar">MY CALENDAR</Link>
                     </li>
                     <li>
-                        <Link to="/Progress">My Progress</Link>
+                        <Link to="/WeeklySchedule">MY WEEKLY SCHEDULE</Link>
                     </li>
                     <li>
-                        <Link to="/Account">My Account</Link>
+                        <Link to="/Progress">MY PROGRESS</Link>
+                    </li>
+                    <li>
+                        <Link to="/Account">MY ACCOUNT</Link>
                     </li>
                 </ul>
             )}

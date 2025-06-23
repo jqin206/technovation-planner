@@ -1,6 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
 
 .calendar-frame {
   width: 90%;
@@ -77,9 +77,9 @@
 }
 
 .monthName {
-    font-family: 'Bungee';
+    font-family: 'Rubik', sans-serif;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 800;
     font-size: 48px;
     line-height: 58px;
     text-align: center;
@@ -90,9 +90,9 @@
 
 h1.countdown  {
     justify-content: center;
-    font-family: 'Bungee Inline';
+    font-family: 'Rubik', sans-serif;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 800;
     font-size: 80px;
     line-height: 1px;
     margin-bottom: 0px;
@@ -135,7 +135,7 @@ h1.countdown  {
 h2 {
     font-family: 'Bungee Inline';
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 90px;
     line-height: 1px;
     text-align: center;
@@ -148,9 +148,9 @@ h2 {
 
 p {
     text-align: center;
-    font-family: 'Archivo';
+    font-family: 'Poppins', sans-serif;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 36px;
     line-height: 1px;
     padding: 0;
@@ -167,9 +167,9 @@ p {
   border-radius: 0px;
   border: 1px solid #445474;
   font-size: 16px;
-  font-family: 'Bungee';
+  font-family: 'Rubik';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 800;
   text-align: center;
   line-height: 15px;
   padding: 5px;
@@ -182,9 +182,9 @@ p {
   border-radius: 25px;
   border: 1px solid #445474;
   font-size: 12px;
-  font-family: 'Archivo';
+  font-family: 'Poppins', sans-serif;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   text-align: center;
   line-height: 15px;
   padding:7px;
@@ -210,9 +210,9 @@ p {
   border-radius: 0px;
   border: 1px solid #445474;
   font-size: 14px;
-  font-family: 'Bungee';
+  font-family: 'Rubik', sans-serif;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 800;
   text-align: center;
   line-height: 15px;
   padding:7px;

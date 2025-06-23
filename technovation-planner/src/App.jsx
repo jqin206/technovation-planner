@@ -7,6 +7,7 @@ import NavBar from './NavBar'
 import Calendar from './Calendar'
 import Account from './Account'
 import Progress from './Progress'
+import WeeklySchedule from './WeeklySchedule';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/account" element={<Account />} />
         <Route path="/progress" element={<Progress />} />
         <Route path="/" element={<Login />} />
+        <Route path="/weeklyschedule" element={<WeeklySchedule />} />
       </Routes>
     </div>
   );
