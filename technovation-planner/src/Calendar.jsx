@@ -4,113 +4,139 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from './configuration';
 import { lessons as seniorLessons} from './senior.js';
 import { lessons as juniorLessons } from './junior.js';
-import {lessons as beginnerLessons} from './beginner.js';
+import { lessons as beginnerLessons} from './beginner.js';
+import { deliverables as seniorDeliverables} from './senior.js';
+import { deliverables as juniorDeliverables } from './junior.js';
+import { deliverables as beginnerDeliverables} from './beginner.js';
 
 function distributeLessons(lessons, startDateStr, endDateStr) {
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
 
   const totalMinutes = lessons.reduce((sum, l) => sum + l.length_int, 0);
-  const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-  const minutesPerDay = totalMinutes / totalDays;
+  const totalWeeks = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24 * 7)) + 1;
+  const targetPerWeek = totalMinutes / totalWeeks;
 
-  const days = Array.from({ length: totalDays }, (_, i) => {
+  const weeks = Array.from({ length: totalWeeks }, (_, i) => {
     const date = new Date(startDate);
-    date.setDate(date.getDate() + i);
+    date.setDate(date.getDate() + i * 7);
     return { date, modules: [], totalMinutes: 0 };
   });
 
-  let dayIdx = 0;
+  let weekIdx = 0;
   const scheduled = [];
 
   for (let i = 0; i < lessons.length; i++) {
     const lesson = lessons[i];
-    let remaining = lesson.length_int;
-    let lastDate = null;
 
-    while (remaining > 0 && dayIdx < days.length) {
-      const day = days[dayIdx];
-      const available = minutesPerDay - day.totalMinutes;
-      const timeUsed = Math.min(remaining, available > 0 ? available : remaining);
+    // Find first week that can fit this lesson
+    while (weekIdx < weeks.length) {
+      const week = weeks[weekIdx];
+      const available = targetPerWeek - week.totalMinutes;
 
-      const partial = timeUsed < lesson.length_int;
-      const part = {
-        ...lesson,
-        length_int: timeUsed,
-        partial,
-        date: new Date(day.date),
-      };
-
-      day.modules.push(part);
-      day.totalMinutes += timeUsed;
-      scheduled.push(part);
-
-      remaining -= timeUsed;
-      lastDate = new Date(day.date);
-
-      if (day.totalMinutes >= minutesPerDay) dayIdx++;
-    }
-
-    const next = lessons[i + 1];
-    const isUnitEnd = !next || next.unit !== lesson.unit;
-    if (isUnitEnd && lastDate) {
-      scheduled.push({
-        type: "unit-complete",
-        unit: lesson.unit,
-        date: lastDate,
-      });
-    }
-  }
-
-  // Step 3: Rebalancing across days
-  for (let i = 0; i < days.length - 1; i++) {
-    const curr = days[i];
-    const next = days[i + 1];
-
-    const moveCondition =
-      (curr.totalMinutes > next.totalMinutes &&
-        curr.modules.length > next.modules.length) ||
-      (curr.totalMinutes === next.totalMinutes &&
-        curr.modules.length - next.modules.length > 1);
-
-    if (moveCondition) {
-      // Move the last movable module from curr to next
-      const movable = [...curr.modules]
-        .reverse()
-        .find((m) => !m.type && !m.partial); // only whole, non-unit-complete
-
-      if (movable) {
-        // Remove from curr
-        const index = curr.modules.lastIndexOf(movable);
-        curr.modules.splice(index, 1);
-        curr.totalMinutes -= movable.length_int;
-
-        // Reassign date
-        const moved = {
-          ...movable,
-          date: new Date(next.date),
+      if (available >= lesson.length_int || weekIdx === weeks.length - 1) {
+        const part = {
+          ...lesson,
+          length_int: lesson.length_int,
+          partial: false,
+          date: new Date(week.date),
         };
-        next.modules.push(moved);
-        next.totalMinutes += moved.length_int;
 
-        // Update scheduled array (find and update by original reference)
-        const sIndex = scheduled.findIndex(
-          (s) =>
-            !s.type &&
-            s.title === movable.title &&
-            s.date.getTime() === curr.date.getTime() &&
-            s.length_int === movable.length_int
-        );
+        week.modules.push(part);
+        week.totalMinutes += lesson.length_int;
+        scheduled.push(part);
 
-        if (sIndex !== -1) {
-          scheduled.splice(sIndex, 1); // remove the old
-        }
-        scheduled.push(moved);
+        break;
+      } else {
+        // If this week is too full, move to next week
+        weekIdx++;
       }
     }
   }
-  return scheduled;
+
+  // Rebalance forward and backward, but preserve order
+  let changed = true;
+while (changed) {
+  changed = false;
+
+  // Forward balancing
+  for (let j = 0; j < weeks.length - 1; j++) {
+    const curr = weeks[j];
+    const next = weeks[j + 1];
+
+    if (curr.modules.length > 0) {
+      const movable = curr.modules[curr.modules.length - 1];
+      if (curr.totalMinutes > next.totalMinutes + movable.length_int) {
+        
+        curr.modules.pop();
+        curr.totalMinutes -= movable.length_int;
+
+        movable.date = new Date(next.date);
+        next.modules.push(movable); // use push() to preserve order
+        next.totalMinutes += movable.length_int;
+        changed = true;
+      }
+    }
+  }
+
+  // Backward balancing
+  for (let j = weeks.length - 1; j > 0; j--) {
+    const curr = weeks[j];
+    const prev = weeks[j - 1];
+
+    if (curr.modules.length > 0) {
+      const movable = curr.modules[0]; // peek at first module in current week
+      if (curr.totalMinutes > prev.totalMinutes + movable.length_int) {
+        // Now actually move it:
+        curr.modules.shift();
+        curr.totalMinutes -= movable.length_int;
+
+        movable.date = new Date(prev.date);
+        prev.modules.push(movable); // use push() to preserve order
+        prev.totalMinutes += movable.length_int;
+        changed = true;
+      }
+    }
+  }
 }
+  
+  scheduled.sort((a, b) => a.date - b.date);
+
+  const uniqueScheduled = [];
+  const seen = new Set();
+  for (const item of scheduled) {
+    const key = `${item.title}-${item.date.toISOString()}-${item.length_int}`;
+    if (!seen.has(key) || item.type === "unit-complete") { 
+      seen.add(key);
+      uniqueScheduled.push(item);
+    }
+
+  }
+  scheduled.length = 0; // Clear the original array
+  scheduled.push(...uniqueScheduled);
+  // Sort by date
+  scheduled.sort((a, b) => a.date - b.date);
+
+  // Add unit-complete markers
+  for (let i = 0; i < lessons.length; i++) {
+    const l = scheduled[i];
+    const next = scheduled[i + 1];
+    const isUnitEnd = !next || next.unit !== l.unit;
+
+    if (isUnitEnd) {
+      const unitComplete = {
+        type: "unit-complete",
+        unit: l.unit,
+        date: new Date(l.date),
+      };
+      scheduled.push(unitComplete);
+    }
+  }
+  scheduled.sort((a, b) => a.unit - b.unit || a.date - b.date);
+  return scheduled;
+  
+}
+
 
 
 const Calendar = () => {
@@ -185,6 +211,22 @@ const lessons = useMemo(() => {
         }
     })
 
+    const deliverables = useMemo(() => {
+  switch (division){
+          case 'senior':
+            return seniorDeliverables;
+            break;
+          case 'junior':
+            return juniorDeliverables;
+            break;
+          case 'beginner':
+            return beginnerDeliverables;
+            break;
+          default:
+            return seniorDeliverables;
+        }
+    })
+
   const daysDiff = useMemo(() => {
     if (!submission) return 0;
     const diff = Math.ceil((new Date(submission) - new Date()) / (1000 * 60 * 60 * 24));
@@ -241,23 +283,27 @@ const lessons = useMemo(() => {
                     {submission &&
                       new Date(submission).toISOString().slice(0, 10) ===
                       day.toISOString().slice(0, 10) && (
-                        <div className="subDate">Submission Deadline</div>
+                        <div className="subDate">Submission Date</div>
                     )}
                   </>
                 ) : ''}
-                {lessonOnDay.map((lesson, idx) => (
-                  lesson.type === "unit-complete" ? (
-                    <div key={lesson.id} className={`complete unit${lesson.unit}u`}>
-                      ✅ Unit {lesson.unit} Completed!
-                    </div>
-                  ) : (
-                  <div key={lesson.id}
-                    className={`lesson-box unit${lesson.unit}`}>
-                      <div className="lesson-title">
-                        {lesson.title + ' ' + lesson.length}
+                {lessonOnDay.map((lesson, idx) => {
+                  if (lesson.type === "unit-complete") {
+                    return (
+                      <div key={lesson.id} className={`complete unit${lesson.unit}u`}>
+                        ✅ Unit {lesson.unit} Completed!
                       </div>
-                  </div>
-                )))}
+                    );
+                  } /*else {
+                    return (
+                      <div key={lesson.id} className={`lesson-box unit${lesson.unit}`}>
+                        <div className="lesson-title">
+                          {lesson.title + ' ' + lesson.length}
+                        </div>
+                      </div>
+                    );
+                  } */
+                })}
               </div>
             );
           })}
