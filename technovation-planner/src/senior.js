@@ -5,3 +5,13 @@ export const lessons = [["Introduction","0 h 15 min",15,1],["Identifying Problem
   length_int,
   unit,
 }));
+
+export const deliverables = [
+  "Project Name and Description",
+  "Pitch Video",
+  "Technical Video",
+  "Business Plan",
+  "Technovation Learning Journey",
+  "Mobile or Web App Source Code ",
+  "Team Photo and Summary (Optional)"
+];

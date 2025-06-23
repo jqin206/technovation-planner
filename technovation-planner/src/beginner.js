@@ -5,3 +5,12 @@ export const lessons = [["Getting Started","0 h 30 min",30,1],["Identifying a Pr
   length_int,
   unit,
 }));
+
+export const deliverables = [
+  "Project Name and Description",
+  "Pitch Video",
+  "Technical Video",
+  "Technovation Learning Journey",
+  "Mobile App or Web App or Scratch Project Source Code ",
+  "Team Photo and Summary (Optional)"
+];
