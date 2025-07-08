@@ -24,7 +24,7 @@ export default function NavBar() {
                         <Link to="/Calendar">MY CALENDAR</Link>
                     </li>
                     <li>
-                        <Link to="/WeeklySchedule">MY WEEKLY SCHEDULE</Link>
+                        <Link to="/WeeklySchedule">MY SCHEDULE</Link>
                     </li>
                     <li>
                         <Link to="/Progress">MY PROGRESS</Link>

@@ -27,12 +27,12 @@
     flex-wrap: wrap;
     gap: 1rem;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .modules {
     position: relative;
-    width: 375px;
+    width: 320px;
     height: 125px;
     display: flex;
     flex-direction: column;
@@ -85,7 +85,6 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 22px;
-
     color: #000000;
 }
 
@@ -97,14 +96,13 @@ p.units {
     line-height: 48px;
     color: #445474;
     margin: 0 0 0.5rem 0;
-    padding-left: 1rem;
+    padding-left: 2rem;
     text-align: left;
-
 }
 
 .progress-bar-container {
-    width: 100%; /* Or whatever width you prefer */
-    max-width: 1350px;
+    width: 90%; /* Or whatever width you prefer */
+    max-width: 100vw;
     height: 25px;
     background-color: #e0e0e0;
     border-radius: 20px;
@@ -117,6 +115,7 @@ p.units {
     height: auto;
     background-color: #4caf50;
     transition: width 0.3s ease-in-out;
+    max-width: 100%;
   }
 
 .unit-header {
