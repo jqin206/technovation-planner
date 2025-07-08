@@ -8,6 +8,7 @@ import Calendar from './Calendar'
 import Account from './Account'
 import Progress from './Progress'
 import WeeklySchedule from './WeeklySchedule';
+import Temp from './Temp'
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/progress" element={<Progress />} />
         <Route path="/" element={<Login />} />
         <Route path="/weeklyschedule" element={<WeeklySchedule />} />
+        <Route path="/temp" element={<Temp />} />
       </Routes>
     </div>
   );

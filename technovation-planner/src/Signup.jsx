@@ -11,10 +11,21 @@ function Signup() {
     const [division, setDivision] = useState('');
     const [start, setStart] = useState('');
     const [submission, setSubmission] = useState('');
+    const [dateError, setDateError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const limitDate = new Date('2025-05-05');
+        const enteredDate = new Date(submission);
+
+        if (enteredDate > limitDate) {
+            setDateError('Your team submission date must be before the program submission deadline of May 5th, 2025.');
+            return; 
+        }
+        setDateError('');
+
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             const docRef = await addDoc(collection(db, "users"), {
@@ -141,6 +152,7 @@ function Signup() {
                         required
                     />
                 </label>
+                {dateError && <p className='error'>{dateError}</p>}
                 <button 
                     className='button' 
                     type="submit">
