@@ -8,15 +8,19 @@ import Calendar from './Calendar'
 import Account from './Account'
 import Progress from './Progress'
 import WeeklySchedule from './WeeklySchedule';
+import GenerateSchedule from './GenerateSchedule';
 import Temp from './Temp'
+import './index.css';
+import { AuthProvider } from './AuthContext';
 
 const App = () => {
   return (
-    <div>
+  <AuthProvider>
       <NavBar/>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/generateschedule" element={<GenerateSchedule />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/account" element={<Account />} />
         <Route path="/progress" element={<Progress />} />
@@ -24,7 +28,7 @@ const App = () => {
         <Route path="/weeklyschedule" element={<WeeklySchedule />} />
         <Route path="/temp" element={<Temp />} />
       </Routes>
-    </div>
+  </AuthProvider>
   );
 }
 

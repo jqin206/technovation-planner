@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, use } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './WeeklySchedule.css';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from './configuration';
@@ -18,6 +18,12 @@ function generateBoxes(lessons, numberOfBoxes, start, submission) {
     var endDate = new Date(startDate.getTime() + 6 * 24 * 60 * 60 * 1000);
     if (startDate > subDate) {
       endDate = startDate;
+    }
+    if (endDate > subDate) {
+      endDate = subDate;
+    }
+    if (week === numberOfBoxes) {
+      endDate = new Date(subDate.getTime()); // last box ends the day before submission
     }
 
     const lessonUnits = [];
@@ -89,10 +95,22 @@ export default function WeeklySchedule() {
       fetchData();
     }, []);
 
+
  // calculate num rows 
   const startDate = new Date(start);
-  const endDate = new Date(submission);
-  const totalWeeks = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24 * 7));
+  const adjustedEnd = new Date(submission);
+  adjustedEnd.setDate(adjustedEnd.getDate() - 1);
+
+  adjustedEnd.setHours(0, 0, 0, 0);
+  startDate.setHours(0, 0, 0, 0);
+
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const msPerWeek = msPerDay * 7;
+
+  const diff = adjustedEnd.getTime() - startDate.getTime();
+
+  const totalWeeks = Math.ceil(diff / msPerWeek);
+
 
   const lessons = useMemo(() => {
   switch (division){
@@ -111,8 +129,8 @@ export default function WeeklySchedule() {
     });
 
    const scheduled = useMemo(() => {
-    return distributeLessons(lessons, start, submission);
-  }, [lessons, start, submission]);
+    return distributeLessons(lessons, totalWeeks, start, submission);
+  }, [lessons, totalWeeks, start, submission]);
 
 
   return (

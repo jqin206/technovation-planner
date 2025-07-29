@@ -9,12 +9,11 @@ import { deliverables as seniorDeliverables} from './senior.js';
 import { deliverables as juniorDeliverables } from './junior.js';
 import { deliverables as beginnerDeliverables} from './beginner.js';
 
-export function distributeLessons(lessons, startDateStr, endDateStr) {
+export function distributeLessons(lessons, totalWeeks, startDateStr, endDateStr) {
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
 
   const totalMinutes = lessons.reduce((sum, l) => sum + l.length_int, 0);
-  const totalWeeks = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24 * 7));
   const targetPerWeek = totalMinutes / totalWeeks;
 
   const weeks = Array.from({ length: totalWeeks }, (_, i) => {
@@ -123,12 +122,19 @@ while (changed) {
     const l = scheduled[i];
     const next = scheduled[i + 1];
     const isUnitEnd = !next || next.unit !== l.unit;
+    let weekEndDate;
+    if (endDate < new Date(l.date).setDate(new Date(l.date).getDate() + 13)) {
+      weekEndDate = new Date(endDate);
+    } else {
+      weekEndDate = new Date(new Date(l.date).setDate(new Date(l.date).getDate() + 6));
+    }
 
     if (isUnitEnd && !completedUnits.has(l.unit)) {
+      
       const unitComplete = {
         type: "unit-complete",
         unit: l.unit,
-        date: new Date(new Date(l.date).setDate(new Date(l.date).getDate() + 6)),
+        date: weekEndDate,
       };
       finalscheduled.push(unitComplete);
       completedUnits.add(l.unit);
@@ -146,22 +152,22 @@ const Calendar = () => {
   const [division, setDivision] = useState('');
 
   useEffect(() => {
-    const fetchData = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const q = query(collection(db, 'users'), where('email', '==', user.email));
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        const data = querySnapshot.docs[0].data();
-        setStart(data.start);
-        setSubmission(data.submission);
-        setDivision(data.division);
-      }
-    };
-
-    fetchData();
-  }, []);
+      const fetchData = async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+  
+        const q = query(collection(db, 'users'), where('email', '==', user.email));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const data = querySnapshot.docs[0].data();
+          setStart(data.start);
+          setSubmission(data.submission);
+          setDivision(data.division);
+        }
+      };
+  
+      fetchData();
+    }, []);
 
   const handlePrevMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
@@ -245,8 +251,11 @@ const lessons = useMemo(() => {
     const totalMinutes = lessons.reduce((sum, l) => sum + l.length_int, 0);
     if (totalMinutes === 0 || totalDays <= 0) return [];
     const minutesPerDay = totalMinutes / totalDays;
+    const startDate = new Date(start);
+    const endDate = new Date(submission);
+    const totalWeeks = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24 * 7));
 
-  return distributeLessons(lessons, start, submission);
+  return distributeLessons(lessons, totalWeeks, start, submission);
   })
 
   return (
@@ -286,15 +295,85 @@ const lessons = useMemo(() => {
                     {submission &&
                       new Date(submission).toISOString().slice(0, 10) ===
                       day.toISOString().slice(0, 10) && (
-                        <div className="subDate">Submission Date</div>
+                        <div className={'subDate'}>Submission Date</div>
                     )}
                   </>
                 ) : ''}
                 {lessonOnDay.map((lesson, idx) => {
                   if (lesson.type === "unit-complete") {
                     return (
-                      <div key={lesson.id} className={`complete unit${lesson.unit}u`}>
+                      <div key={lesson.id || lesson.name || idx} className={`complete unit${lesson.unit}u`}>
                         ✅ Unit {lesson.unit} Completed!
+                      </div>
+                    );
+                  }
+                  if (lesson.title === 'Positive Impact' || lesson.title === 'Positive Impact (Optional)') {
+                    return (
+                      <div key={lesson.id || lesson.name || idx} className={`deliverable num1`}>
+                        🌟 Deliverable: {deliverables[0]} Due!
+                      </div>
+                    );
+                  }
+                  else if (lesson.title === 'Business Canvas') {
+                    return (
+                      <div key={lesson.id || lesson.name || idx} className={`deliverable num2`}>
+                        🌟 Deliverable: {deliverables[1]} Due!
+                      </div>
+                    );
+                  }
+                  else if (lesson.title === 'User Adoption Plan') {
+                    return (
+                      <div key={lesson.id || lesson.name || idx} className={`deliverable num2`}>
+                        🌟 Deliverable: {deliverables[1]}  Due!
+                      </div>
+                    );
+                  }
+                  else if (lesson.title === 'Planning your Videos') {
+                    return (
+                      <div key={lesson.id || lesson.name || idx} className={`deliverable num2`}>
+                        🌟 Deliverable: {deliverables[1]} Due!
+                      </div>
+                    );
+                  }
+                  if (lesson.title === 'Outline Pitch and Technical Videos') {
+                    return (
+                      <div key={lesson.id || lesson.name || idx} className={`deliverable num3`}>
+                        Deliverable: {deliverables[2]} Due!
+                      </div>
+                    );
+                  }
+                  if (lesson.title === 'Editing Videos' || lesson.title === 'Editing your Videos') {
+                    if (division === 'senior') {
+                      return (
+                        <div>
+                          <div key={lesson.id || lesson.name || idx} className={`deliverable num4`}>
+                            🌟 Deliverable: {deliverables[3]} Due!
+                          </div>
+                          <div key={lesson.id || lesson.name || idx} className={`deliverable num5`}>
+                            🌟 Deliverable: {deliverables[4]} Due!
+                          </div>
+                        </div>
+                      );
+                    }
+                    else if (division === 'junior' || division === 'beginner') {
+                      return (
+                        <div>
+                          <div key={lesson.id || lesson.name || idx} className={`deliverable num3`}>
+                            🌟 Deliverable: {deliverables[2]} Due!
+                          </div>
+                          <div key={lesson.id || lesson.name || idx} className={`deliverable num4`}>
+                            🌟 Deliverable: {deliverables[3]} Due!
+                          </div>
+                        </div>
+                      );
+                    }
+                  }
+                  if (lesson.title === 'Learning Journey') {
+                    let idx = 0;
+                    division === 'senior' ? idx = 5 : idx = 4; 
+                    return (
+                      <div key={lesson.id || lesson.name || idx} className={`deliverable num${idx+1}`}>
+                        🌟 Deliverable: {deliverables[idx]} Due!
                       </div>
                     );
                   }

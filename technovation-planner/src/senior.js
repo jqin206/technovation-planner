@@ -7,11 +7,10 @@ export const lessons = [["Introduction","0 h 15 min",15,1],["Identifying Problem
 }));
 
 export const deliverables = [
-  "Project Name and Description",
+  "Project Description",
+  "Business Canvas",
+  "App Source Code",
   "Pitch Video",
   "Technical Video",
-  "Business Plan",
-  "Technovation Learning Journey",
-  "Mobile or Web App Source Code ",
-  "Team Photo and Summary (Optional)"
+  "Learning Journey"
 ];
