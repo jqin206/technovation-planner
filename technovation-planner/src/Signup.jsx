@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth, db, createUserWithEmailAndPassword, collection, addDoc } from './configuration';
 import './Signup.css'
 
 function Signup() {
+    const [position, setPosition] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -50,6 +51,33 @@ function Signup() {
             <div className = 'box_signup'>
             <h1> Create Account </h1>
             <form className='form_signup' onSubmit={handleSubmit}>
+                <label>
+                    Are you a student or mentor?
+                    <div className="radio-group">
+                        <div className="radio-item">
+                            <input 
+                                type="radio" 
+                                name="position" 
+                                value="student" 
+                                id="student"
+                                checked={position === 'student'}
+                                onChange={(e) => setPosition(e.target.value)}
+                            />
+                            <label htmlFor="student">Student</label>
+                        </div>
+                        <div className="radio-item">
+                            <input 
+                                type="radio" 
+                                name="position" 
+                                value="mentor" 
+                                id="mentor"
+                                checked={position === 'mentor'}
+                                onChange={(e) => setPosition(e.target.value)} 
+                            />
+                            <label htmlFor="mentor">Mentor</label>
+                        </div>
+                    </div>
+                </label>
                 <label> 
                     Email Address
                     <input 
@@ -158,6 +186,7 @@ function Signup() {
                     type="submit">
                         Create Account
                 </button>
+                <Link className="link" to="/login">Already have an account? Log in here!</Link>
             </form>
         </div>
     </div>

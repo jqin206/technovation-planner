@@ -94,7 +94,7 @@ input[type="date"] {
 .radio-group {
     display: flex;
     flex-direction: column; /* Stack items vertically */
-    gap: 10px; /* Space between the radio items */
+    gap: 0; /* Space between the radio items */
 }
 
 /* Style each radio item to align the button and the label horizontally */
