@@ -38,7 +38,7 @@ function Login() {
     return (
         <div className = 'page'>
             <div className = 'box_login'>
-            <h1> Login </h1>
+            <h1 className='login'> Login </h1>
             <form className='form_login' onSubmit={handleSubmit}>
                 <label> 
                     Email Address

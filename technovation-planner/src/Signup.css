@@ -42,7 +42,7 @@ body, html, #root {
     border-radius: 35px;
 }
 
-h1 {
+.signup {
     width: 591px;
     height: 50px;
     text-align: center;
