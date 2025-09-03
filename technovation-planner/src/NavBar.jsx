@@ -5,11 +5,7 @@ import logo from './assets/logo.png';
 
 export default function NavBar() {
     const location = useLocation();
-<<<<<<< HEAD
     const hideLinksOn = ["/","/signup", "/login", "/generateschedule", "/weeklyschedule"];
-=======
-    const hideLinksOn = ["/","/signup", "/login", "/admin", "/admin/changedeadline", "/admin/curriculumdivisions", "/admin/curriculumdivisions/beginner", "/admin/curriculumdivisions/junior", "/admin/curriculumdivisions/senior"];
->>>>>>> a232a6ca4210cb297cb432dbf9188ad5d168f0e2
     const hideLinks = hideLinksOn.includes(location.pathname);
     return (
         <nav className="navbar">
