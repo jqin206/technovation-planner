@@ -122,7 +122,7 @@ export default function WeeklySchedule() {
   console.log(scheduled);
   return (
       <div className="weekly_schedule">
-        <h1 className="countdown">Weekly Schedule</h1>
+        <h1 className="weekly_schedule_title">Weekly Schedule</h1>
         <div> 
           <Link className="link" to="/signup">Want to track your progress? Create an account!</Link>
         </div>
