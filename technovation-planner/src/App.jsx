@@ -10,6 +10,12 @@ import Progress from './Progress'
 import WeeklySchedule from './WeeklySchedule';
 import GenerateSchedule from './GenerateSchedule';
 import Temp from './Temp'
+import Admin from './Admin'
+import AdminChangeDeadline from './AdminChangeDeadline'
+import AdminCurriculumDivisions from './AdminCurriculumDivisions'
+import AdminBeginner from './AdminBeginner'
+import AdminJunior from './AdminJunior'
+import AdminSenior from './AdminSenior'
 import './index.css';
 import { AuthProvider } from './AuthContext';
 
@@ -27,6 +33,12 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/weeklyschedule" element={<WeeklySchedule />} />
         <Route path="/temp" element={<Temp />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/changedeadline" element={<AdminChangeDeadline />} />
+        <Route path="/admin/curriculumdivisions" element={<AdminCurriculumDivisions />} />
+        <Route path="/admin/curriculumdivisions/beginner" element={<AdminBeginner />} />
+        <Route path="/admin/curriculumdivisions/junior" element={<AdminJunior />} />
+        <Route path="/admin/curriculumdivisions/senior" element={<AdminSenior />} />
       </Routes>
   </AuthProvider>
   );
