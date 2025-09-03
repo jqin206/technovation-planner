@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth, db } from './configuration';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 
 import './GenerateSchedule.css'
 
 function GenerateSchedule() {
+    
     const [team, setTeam] = useState('');
     const [division, setDivision] = useState('');
     const [start, setStart] = useState('');
@@ -14,21 +15,26 @@ function GenerateSchedule() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const [teams, setTeams] = useState([]);
+    const [showOriginalButton, setShowOriginalButton] = useState(true);
 
     useEffect(() => {
     const getTeams = async () => {
-        const usersRef = collection(db, "users"); // or "accounts" if that's your collection name
+        const usersRef = collection(db, "users");
         const snapshot = await getDocs(usersRef);
 
         const teamsArr = snapshot.docs
         .map(doc => doc.data().team)
-        .filter(Boolean); // filters out undefined/null in case some users don't have a team
+        .filter(Boolean);
         setTeams(teamsArr);
     };
 
     getTeams();
     }, []);
 
+    const handleChange = () => {
+        setError('');
+        setShowOriginalButton(true);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -46,12 +52,13 @@ function GenerateSchedule() {
         const match = teams.find(curr => curr.trim().toLowerCase() === team.trim().toLowerCase());
         if (match) {
             setError('This team already exists. Please choose a different team name or view existing schedule.');
+            setShowOriginalButton(false);
             return;
         }
         setError('');
-
-            navigate('/weeklyschedule'); 
+            navigate('/weeklyschedule', { state: { division, start, submission } });
         };
+
 
     return (
         <div className='page'>
@@ -66,6 +73,7 @@ function GenerateSchedule() {
                             placeholder="Team"
                             value={team}
                             onChange={(e) => setTeam(e.target.value)}
+                            onChangeCapture={handleChange}
                         />
                     </label>
                     <label>
@@ -126,12 +134,22 @@ function GenerateSchedule() {
                     </label>
                     {dateError && <p className="error">{dateError}</p>}
                     {error && <p className="error">{error}</p>}
-                    {error && (
+                    {showOriginalButton && (
+                        <button className="button" type="submit" >Generate Schedule</button>
+                    )}
+                    {!showOriginalButton && (
                         <button className="button" type="button" onClick={() => navigate('/weeklyschedule')}>View Schedule</button>
                     )}
-                    {!error && (
+                    {useEffect(() => {
+                    if (showOriginalButton) {
                         <button className="button" type="submit">Generate Schedule</button>
-                    )}
+                    } else {
+                        <button className="button" type="button" onClick={() => navigate('/weeklyschedule')}>View Schedule</button>
+                    }
+                }, [showOriginalButton])}
+                    <div className="link-container">
+                        <Link className="link" to="/login">Already have an account? Log in here!</Link>
+                    </div>
                 </form>
             </div>
         </div>

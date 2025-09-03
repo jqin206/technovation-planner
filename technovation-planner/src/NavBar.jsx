@@ -5,7 +5,7 @@ import logo from './assets/logo.png';
 
 export default function NavBar() {
     const location = useLocation();
-    const hideLinksOn = ["/","/signup", "/login"];
+    const hideLinksOn = ["/","/signup", "/login", "/generateschedule", "/weeklyschedule"];
     const hideLinks = hideLinksOn.includes(location.pathname);
     return (
         <nav className="navbar">
@@ -24,7 +24,7 @@ export default function NavBar() {
                         <Link to="/Calendar">MY CALENDAR</Link>
                     </li>
                     <li>
-                        <Link to="/WeeklySchedule">MY SCHEDULE</Link>
+                        <Link to="/Schedule">MY SCHEDULE</Link>
                     </li>
                     <li>
                         <Link to="/Progress">MY PROGRESS</Link>

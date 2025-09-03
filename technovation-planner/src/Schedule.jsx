@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import './WeeklySchedule.css';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db, auth } from './configuration';
 import { distributeLessons } from './Calendar.jsx';
 import { lessons as seniorLessons} from './senior.js';
 import { lessons as juniorLessons } from './junior.js';
 import { lessons as beginnerLessons} from './beginner.js';
-import { Link, useLocation } from 'react-router-dom';
 
 function generateBoxes(lessons, numberOfBoxes, start, submission) {
   const colors = ['blue', 'pink', 'green', 'yellow'];
@@ -33,16 +34,8 @@ function generateBoxes(lessons, numberOfBoxes, start, submission) {
     
 
     for (let i = 0; i < lessons.length; i++) {
-      const lessonDate = new Date(lessons[i].date);
-      lessonDate.setHours(0, 0, 0, 0);
-
-      const weekStart = new Date(weekStartDate);
-      weekStart.setHours(0, 0, 0, 0);
-
-      const weekEnd = new Date(endDate);
-      weekEnd.setHours(0, 0, 0, 0);
-
-      if (lessonDate >= weekStart && lessonDate <= weekEnd && lessons[i].type != 'unit-complete') {
+      const lessonDate = new Date(lessons[i].date)
+      if (lessonDate >= weekStartDate && lessonDate <= endDate && lessons[i].type != 'unit-complete') {
         lessonUnits.push(lessons[i].unit);
         lessonTitles.push(lessons[i].title);
         lessonLengths.push(lessons[i].length);
@@ -79,8 +72,28 @@ function generateBoxes(lessons, numberOfBoxes, start, submission) {
 }
 
 export default function WeeklySchedule() {
-  const location = useLocation();
-  const { division, start, submission } = location.state || {};
+  const [start, setStart] = useState('');
+    const [submission, setSubmission] = useState('');
+    const [division, setDivision] = useState('');
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+  
+        const q = query(collection(db, 'users'), where('email', '==', user.email));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const data = querySnapshot.docs[0].data();
+          setStart(data.start);
+          setSubmission(data.submission);
+          setDivision(data.division);
+        }
+      };
+  
+      fetchData();
+    }, []);
+
 
  // calculate num rows 
   const startDate = new Date(start);
@@ -119,13 +132,9 @@ export default function WeeklySchedule() {
   }, [lessons, totalWeeks, start, submission]);
 
 
-  console.log(scheduled);
   return (
       <div className="weekly_schedule">
         <h1 className="countdown">Weekly Schedule</h1>
-        <div> 
-          <Link className="link" to="/signup">Want to track your progress? Create an account!</Link>
-        </div>
         <div className="container">
           { generateBoxes(scheduled, totalWeeks, start, submission)}
         </div>
