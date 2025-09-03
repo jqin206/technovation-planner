@@ -11,14 +11,14 @@
     padding-bottom: 100px;
 }
 
-h1.countdown  {
+h1.weekly_schedule_title  {
     justify-content: center;
     font-family: 'Rubik', sans-serif;
     font-style: normal;
     font-weight: 800;
     font-size: clamp(56px, 8vw, 64px); /* Responsive font size */
     line-height: 1px;
-    margin-bottom: 0px;
+    margin-bottom: 50px;
     margin-top: 75px;
     padding: 0;
 

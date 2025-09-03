@@ -49,7 +49,7 @@ function Signup() {
     return (
         <div className = 'page'>
             <div className = 'box_signup'>
-            <h1> Create Account </h1>
+            <h1 className ='signup_title'> Create Account </h1>
             <form className='form_signup' onSubmit={handleSubmit}>
                 <label>
                     Are you a student or mentor?

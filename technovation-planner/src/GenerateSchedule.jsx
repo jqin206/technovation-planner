@@ -63,7 +63,7 @@ function GenerateSchedule() {
     return (
         <div className='page'>
             <div className='box_generate_schedule'>
-                <h1> Generate Schedule </h1>
+                <h1 className='generate_schedule'> Generate Schedule </h1>
                 <form className='form_generate_schedule' onSubmit={handleSubmit}>
                     <label> 
                         Team
