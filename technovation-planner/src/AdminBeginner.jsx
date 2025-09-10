@@ -1,3 +1,4 @@
+import { db, doc, setDoc, getDoc, query, orderBy } from './configuration'
 
 function AdminBeginner ()
 {
