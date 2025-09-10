@@ -138,13 +138,13 @@ function GenerateSchedule() {
                         <button className="button" type="submit" >Generate Schedule</button>
                     )}
                     {!showOriginalButton && (
-                        <button className="button" type="button" onClick={() => navigate('/weeklyschedule')}>View Schedule</button>
+                        <button className="button" type="button" onClick={() => navigate('/weeklyschedule', { state: { team } })}>View Schedule</button>
                     )}
                     {useEffect(() => {
                     if (showOriginalButton) {
                         <button className="button" type="submit">Generate Schedule</button>
                     } else {
-                        <button className="button" type="button" onClick={() => navigate('/weeklyschedule')}>View Schedule</button>
+                        <button className="button" type="button" onClick={() => navigate('/weeklyschedule', { state: { team } })}>View Schedule</button>
                     }
                 }, [showOriginalButton])}
                     <div className="link-container">

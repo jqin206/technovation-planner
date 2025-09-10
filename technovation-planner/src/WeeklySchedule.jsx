@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import './WeeklySchedule.css';
+import { db } from './configuration';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { distributeLessons } from './Calendar.jsx';
 import { lessons as seniorLessons} from './senior.js';
 import { lessons as juniorLessons } from './junior.js';
@@ -80,8 +82,30 @@ function generateBoxes(lessons, numberOfBoxes, start, submission) {
 
 export default function WeeklySchedule() {
   const location = useLocation();
-  const { division, start, submission } = location.state || {};
+  const { team, division: stateDivision, start: stateStart, submission: stateSubmission } = location.state || {};
 
+  const [division, setDivision] = useState(stateDivision || '');
+  const [start, setStart] = useState(stateStart || '');
+  const [submission, setSubmission] = useState(stateSubmission || '');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!team) return; // guard if no team was passed
+
+      const q = query(collection(db, 'users'), where('team', '==', team));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const data = querySnapshot.docs[0].data();
+        setDivision(data.division);
+        setStart(data.start);
+        setSubmission(data.submission);
+      }
+    };
+
+    fetchData();
+  }, [team]);
+  
  // calculate num rows 
   const startDate = new Date(start);
   const adjustedEnd = new Date(submission);

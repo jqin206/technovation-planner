@@ -29,7 +29,7 @@ export default function Account() {
     };
     fetchData();
   }, []);
-
+  
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
