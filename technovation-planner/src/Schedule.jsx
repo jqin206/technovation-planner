@@ -5,7 +5,7 @@ import { db, auth } from './configuration';
 import { distributeLessons } from './Calendar.jsx';
 import { lessons as seniorLessons} from './senior.js';
 import { lessons as juniorLessons } from './junior.js';
-import { lessons as beginnerLessons} from './beginner.js';
+import { lessons as beginnerLessons} from './beginner_curriculum.js';
 
 function generateBoxes(lessons, numberOfBoxes, start, submission) {
   const colors = ['blue', 'pink', 'green', 'yellow'];
@@ -111,21 +111,27 @@ export default function WeeklySchedule() {
   const totalWeeks = Math.ceil(diff / msPerWeek);
 
 
-  const lessons = useMemo(() => {
-  switch (division){
+  const [ lessons, setLessons ] = useState([])
+    useEffect(() => {
+      async function fetchLessons() {
+        let arr = [];
+        switch (division){
           case 'senior':
-            return seniorLessons;
+            arr = await seniorLessons;
             break;
           case 'junior':
-            return juniorLessons;
+            arr = await juniorLessons;
             break;
           case 'beginner':
-            return beginnerLessons;
+            arr = await beginnerLessons;
             break;
           default:
-            return seniorLessons;
+            arr = await seniorLessons;
         }
-    });
+        setLessons(arr);
+      }
+      if (division) fetchLessons();
+    }, [division]);
 
    const scheduled = useMemo(() => {
     return distributeLessons(lessons, totalWeeks, start, submission);

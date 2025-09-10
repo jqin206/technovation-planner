@@ -3,8 +3,9 @@ import './WeeklySchedule.css';
 import { distributeLessons } from './Calendar.jsx';
 import { lessons as seniorLessons} from './senior.js';
 import { lessons as juniorLessons } from './junior.js';
-import { lessons as beginnerLessons} from './beginner.js';
+import { lessons as beginnerLessons} from './beginner_curriculum.js';
 import { Link, useLocation } from 'react-router-dom';
+import CopySchedule from './CopySchedule.jsx';
 
 function generateBoxes(lessons, numberOfBoxes, start, submission) {
   const colors = ['blue', 'pink', 'green', 'yellow'];
@@ -78,6 +79,65 @@ function generateBoxes(lessons, numberOfBoxes, start, submission) {
     });
 }
 
+function generateScheduleText(lessons, numberOfWeeks, start, submission) {
+  let output = ''
+  for (let weekIndex = 0; weekIndex < numberOfWeeks; weekIndex++) {
+    const week = weekIndex + 1;
+    const subDate = new Date(submission);
+    const startDateObj = new Date(start); // make a Date object
+    const startDate = new Date(startDateObj.getTime() + (7 * (week - 1)) * 24 * 60 * 60 * 1000);
+    var endDate = new Date(startDate.getTime() + 6 * 24 * 60 * 60 * 1000);
+    if (startDate > subDate) {
+      endDate = startDate;
+    }
+    if (endDate > subDate) {
+      endDate = subDate;
+    }
+    if (week === numberOfWeeks) {
+      endDate = new Date(subDate.getTime()); // last box ends the day before submission
+    }
+
+    const lessonUnits = [];
+    const lessonTitles = [];
+    const lessonLengths = [];
+    let lessonsLength = 0;
+    const weekStartDate = new Date(startDate);
+    
+
+    for (let i = 0; i < lessons.length; i++) {
+      const lessonDate = new Date(lessons[i].date);
+      lessonDate.setHours(0, 0, 0, 0);
+
+      const weekStart = new Date(weekStartDate);
+      weekStart.setHours(0, 0, 0, 0);
+
+      const weekEnd = new Date(endDate);
+      weekEnd.setHours(0, 0, 0, 0);
+
+      if (lessonDate >= weekStart && lessonDate <= weekEnd && lessons[i].type != 'unit-complete') {
+        lessonUnits.push(lessons[i].unit);
+        lessonTitles.push(lessons[i].title);
+        lessonLengths.push(lessons[i].length);
+        lessonsLength += lessons[i].length_int;
+      }
+    }
+    const totalHours = Math.floor(lessonsLength / 60);
+    const totalMinutes = lessonsLength % 60;
+
+    let weekText = `Week ${week}\n`;
+    weekText += `Dates: ${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}\n`;
+    weekText += `Expected time: ${totalHours} hours ${totalMinutes} mins\n`;
+    weekText += `Timeline:\n`;
+
+    lessonTitles.forEach((title, idx) => {
+      weekText += `Unit ${lessonUnits[idx]}: ${title} (${lessonLengths[idx]})\n`;
+    });
+
+    output += weekText + "\n";
+  }
+  return output.trim();
+}
+
 export default function WeeklySchedule() {
   const location = useLocation();
   const { division, start, submission } = location.state || {};
@@ -98,21 +158,27 @@ export default function WeeklySchedule() {
   const totalWeeks = Math.ceil(diff / msPerWeek);
 
 
-  const lessons = useMemo(() => {
-  switch (division){
+  const [ lessons, setLessons ] = useState([])
+    useEffect(() => {
+      async function fetchLessons() {
+        let arr = [];
+        switch (division){
           case 'senior':
-            return seniorLessons;
+            arr = await seniorLessons;
             break;
           case 'junior':
-            return juniorLessons;
+            arr = await juniorLessons;
             break;
           case 'beginner':
-            return beginnerLessons;
+            arr = await beginnerLessons;
             break;
           default:
-            return seniorLessons;
+            arr = await seniorLessons;
         }
-    });
+        setLessons(arr);
+      }
+      if (division) fetchLessons();
+    }, [division]);
 
    const scheduled = useMemo(() => {
     return distributeLessons(lessons, totalWeeks, start, submission);
@@ -126,8 +192,11 @@ export default function WeeklySchedule() {
         <div> 
           <Link className="link" to="/signup">Want to track your progress? Create an account!</Link>
         </div>
+        <CopySchedule generateSchedule={() => generateScheduleText(scheduled, totalWeeks, start, submission)} />
+          <p> Click the button to copy the schedule below. </p>
+          <p> Then, open a document or spreadsheet to paste and save your schedule.</p>
         <div className="container">
-          { generateBoxes(scheduled, totalWeeks, start, submission)}
+          { generateBoxes(scheduled, totalWeeks, start, submission) }
         </div>
       </div>
     );

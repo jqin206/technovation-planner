@@ -1,33 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-.adminPage {
-    display: flex;
-    flex-direction: column;
-}
-
-.box_admin {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;
-    margin: 0 auto;
-    padding-top: 40px;
-    padding-bottom: 100px;
-}
-
-h1 {
-    color: var(--dark-gray, #445474);
-    text-align: center;
-    font-family: Poppins;
-    font-size: 48px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    margin-bottom: 100px;
-}
-
-.submissionButton {
+.copyButton {
     width: 620px;
     height: 70px;
     flex-shrink: 0;
@@ -50,7 +24,18 @@ h1 {
     text-align: center;
 }
 
-.curriculumButton {
+.copyButton:active,
+.copyButton:focus {
+    outline: none;
+    border: 2px solid #6BBF55;
+}
+
+.copyButton:hover,
+.copiedButton:hover {
+    background: rgba(65, 167, 46, 0.90);
+}
+
+.copiedButton {
     width: 620px;
     height: 70px;
     flex-shrink: 0;
@@ -58,8 +43,10 @@ h1 {
     margin-bottom: 20px;
 
     box-sizing: border-box;
-    background: #378CD7;
-    border: 2px solid #5EA0DF;
+    /* deep green */
+    background: #41A72E;
+    /* deep green */
+    border: 2px solid #6BBF55;
     border-radius: 35px;
 
     font-family: 'Rubik', sans-serif;
@@ -69,4 +56,11 @@ h1 {
 
     color: #FFF;
     text-align: center;
+}
+
+
+.copiedButton:active,
+.copiedButton:focus {
+  outline: none;
+  border: 2px solid #41A72E; /* or whatever active/focus color you want */
 }

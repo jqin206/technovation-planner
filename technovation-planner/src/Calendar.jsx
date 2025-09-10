@@ -4,10 +4,10 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from './configuration';
 import { lessons as seniorLessons} from './senior.js';
 import { lessons as juniorLessons } from './junior.js';
-import { lessons as beginnerLessons} from './beginner.js';
+import { lessons as beginnerLessons} from './beginner_curriculum.js';
 import { deliverables as seniorDeliverables} from './senior.js';
 import { deliverables as juniorDeliverables } from './junior.js';
-import { deliverables as beginnerDeliverables} from './beginner.js';
+import { deliverables as beginnerDeliverables} from './beginner_deliverables.js';
 
 export function distributeLessons(lessons, totalWeeks, startDateStr, endDateStr) {
   const startDate = new Date(startDateStr);
@@ -201,37 +201,43 @@ const Calendar = () => {
   const daysInMonth = getCalendarGrid(currentDate);
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const lessons = useMemo(() => {
-  switch (division){
-          case 'senior':
-            return seniorLessons;
-            break;
-          case 'junior':
-            return juniorLessons;
-            break;
-          case 'beginner':
-            return beginnerLessons;
-            break;
-          default:
-            return seniorLessons;
-        }
-    })
+  const [ lessons, setLessons ] = useState([])
+  useEffect(() => {
+    async function fetchLessons() {
+      let arr = [];
+      switch (division){
+        case 'senior':
+          arr = await seniorLessons;
+          break;
+        case 'junior':
+          arr = await juniorLessons;
+          break;
+        case 'beginner':
+          arr = await beginnerLessons;
+          break;
+        default:
+          arr = await seniorLessons;
+      }
+      setLessons(arr);
+    }
+    if (division) fetchLessons();
+  }, [division]);
 
-    const deliverables = useMemo(() => {
-  switch (division){
-          case 'senior':
-            return seniorDeliverables;
-            break;
-          case 'junior':
-            return juniorDeliverables;
-            break;
-          case 'beginner':
-            return beginnerDeliverables;
-            break;
-          default:
-            return seniorDeliverables;
-        }
-    })
+  const deliverables = useMemo(() => {
+    switch (division){
+            case 'senior':
+              return seniorDeliverables;
+              break;
+            case 'junior':
+              return juniorDeliverables;
+              break;
+            case 'beginner':
+              return beginnerDeliverables;
+              break;
+            default:
+              return seniorDeliverables;
+          }
+      })
 
   const daysDiff = useMemo(() => {
     if (!submission) return 0;
@@ -240,7 +246,7 @@ const lessons = useMemo(() => {
   }, [submission]);
 
   const scheduledLessons = useMemo(() => {
-    if (!start || !submission) return [];
+    if (!start || !submission || lessons.length === 0) return [];
 
     const totalDays = Math.ceil(
       (new Date(submission) - new Date(start)) / (1000 * 60 * 60 * 24)

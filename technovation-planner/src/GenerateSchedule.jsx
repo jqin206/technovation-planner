@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth, db } from './configuration';
-import { collection, getDocs } from 'firebase/firestore';
-
+import { db, collection, getDocs, getDoc, doc } from './configuration';
 import './GenerateSchedule.css'
+import { limit } from 'firebase/firestore';
 
 function GenerateSchedule() {
     
@@ -38,17 +37,25 @@ function GenerateSchedule() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const limitDate = new Date('2025-05-05');
-        const enteredDate = new Date(submission);
-
-        if (enteredDate > limitDate) {
-            setDateError('Your team submission date must be before the program submission deadline of May 5th, 2025.');
-            return; 
-        }
-        setDateError('');
-
         
+        const deadlineRef = doc(db, 'submission', 'deadline');
+        const deadlineSnap = await getDoc(deadlineRef);
+        if (deadlineSnap.exists()) {
+            const deadlineData = deadlineSnap.data();
+            const deadline = deadlineData.date;
+
+            const limitDate = new Date(deadline + 'T17:00:00-07:00');
+            const enteredDate = new Date(submission + 'T17:00:00-07:00');
+
+            if (enteredDate > limitDate) {
+                setDateError(`Your team submission date must be before the program submission deadline of: ${ limitDate.toDateString() }.`);
+                return; 
+            }
+            setDateError('');
+        } else {
+            console.log("No such document!")
+        }
+
         const match = teams.find(curr => curr.trim().toLowerCase() === team.trim().toLowerCase());
         if (match) {
             setError('This team already exists. Please choose a different team name or view existing schedule.');
