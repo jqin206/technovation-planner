@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from './configuration'
+import { auth, doc, db, getDoc } from './configuration'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import './Login.css'
 
@@ -15,9 +15,27 @@ function Login() {
         e.preventDefault();
         setError('');
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            navigate('/calendar')
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            const userDocRef = doc(db, "users", user.uid);
+            const userDocSnap = await getDoc(userDocRef);
+
+            if (!userDocSnap.exists()) {
+                setError("User data not found.");
+                return;
+            }
+
+            const userData = userDocSnap.data();
+            const accountType = userData.accountType;
+
+                if (accountType === 'Student')
+                    navigate('/calendar'); 
+                else if (accountType === 'Mentor')
+                    navigate('/teams')
+
         } catch (error) {
+            console.log("Error: ", error);
             switch (error.code) {
                 case 'auth/user-not-found':
                 case 'auth/invalid-email':

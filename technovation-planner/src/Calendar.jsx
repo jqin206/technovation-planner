@@ -2,11 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './Calendar.css';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from './configuration';
-import { lessons as seniorLessons} from './senior.js';
-import { lessons as juniorLessons } from './junior.js';
-import { lessons as beginnerLessons} from './beginner_curriculum.js';
-import { deliverables as seniorDeliverables} from './senior.js';
-import { deliverables as juniorDeliverables } from './junior.js';
+import { lessons as getLessons } from './curriculum.js';
+import { deliverables as seniorDeliverables} from './senior_deliverables.js';
+import { deliverables as juniorDeliverables } from './junior_deliverables.js';
 import { deliverables as beginnerDeliverables} from './beginner_deliverables.js';
 
 export function distributeLessons(lessons, totalWeeks, startDateStr, endDateStr) {
@@ -204,20 +202,7 @@ const Calendar = () => {
   const [ lessons, setLessons ] = useState([])
   useEffect(() => {
     async function fetchLessons() {
-      let arr = [];
-      switch (division){
-        case 'senior':
-          arr = await seniorLessons;
-          break;
-        case 'junior':
-          arr = await juniorLessons;
-          break;
-        case 'beginner':
-          arr = await beginnerLessons;
-          break;
-        default:
-          arr = await seniorLessons;
-      }
+      const arr = await getLessons(division);
       setLessons(arr);
     }
     if (division) fetchLessons();

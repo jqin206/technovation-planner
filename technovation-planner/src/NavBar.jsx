@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from './configuration';
 import { Link, useLocation } from "react-router-dom";
@@ -8,24 +9,27 @@ import logo from './assets/logo.png';
 export default function NavBar() {
     const location = useLocation();
     const hideLinksOn = ["/","/signup", "/login", "/admin", "/generateschedule", "/weeklyschedule", "/admin/changedeadline", "/admin/curriculumdivisions", "/admin/curriculumdivisions/beginner", "/admin/curriculumdivisions/junior", "/admin/curriculumdivisions/senior"];
-    const [accountType, setAccountType] = React.useState('');
+    const [accountType, setAccountType] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-          const fetchData = async () => {
-            const user = auth.currentUser;
-            if (!user) return;
-      
-            const q = query(collection(db, 'users'), where('email', '==', user.email));
-            const querySnapshot = await getDocs(q);
-            if (!querySnapshot.empty) {
-              const data = querySnapshot.docs[0].data();
-              setAccountType(data.accountType);
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const q = query(collection(db, 'users'), where('email', '==', user.email));
+                const querySnapshot = await getDocs(q);
+                if (!querySnapshot.empty) {
+                    const data = querySnapshot.docs[0].data();
+                    setAccountType(data.accountType);
+                } else {
+                    setAccountType('');
+                }
+                setIsLoading(false);
             }
-          };
-      
-          fetchData();
+        });
+        return () => unsubscribe();
         }, []);
-        const hideLinks = hideLinksOn.includes(location.pathname) || accountType !== 'Mentor';
+        const hideLinks = hideLinksOn.includes(location.pathname);
+        if (isLoading) return null;
     return (
         <nav className="navbar">
             <div className="logo-section">
@@ -37,7 +41,7 @@ export default function NavBar() {
                 <img src={logo} alt="Logo" className="logo" />
                 </a>
             </div>
-            {!hideLinks && (
+            {accountType === 'Student' && !hideLinks && (
                 <ul className="navbar_links">
                     <li>
                         <Link to="/Calendar">MY CALENDAR</Link>
@@ -53,7 +57,7 @@ export default function NavBar() {
                     </li>
                 </ul>
             )}
-            {accountType === 'Mentor' && (
+            {accountType === 'Mentor' && !hideLinks && (
                 <ul className="navbar_links">
                     <li>
                         <Link to="/Teams">MY TEAMS</Link>
@@ -63,7 +67,7 @@ export default function NavBar() {
                     </li>
                 </ul>
             )}
-            {"/generateschedule" === location.pathname || "/" === location.pathname && (
+            {("/generateschedule" === location.pathname || "/" === location.pathname) && (
                 <ul className="navbar_links">
                     <li>
                         <Link to="/login" className="login-button">LOG IN</Link>
