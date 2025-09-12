@@ -75,7 +75,12 @@ function Signup() {
                 createdAt: new Date()
             });
             // redirect the user to the calendar page after successful signup
-            navigate('/calendar'); 
+            if (accountType === 'Student') {
+                navigate('/calendar');
+            }
+            if (accountType === 'Mentor') {
+                navigate('/teams');
+            }
         } catch (error) {
             // Handle registration errors (e.g., display an error message)
             console.error("Error creating user:", error);
