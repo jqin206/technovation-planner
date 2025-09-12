@@ -3,9 +3,7 @@ import './WeeklySchedule.css';
 import { db } from './configuration';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { distributeLessons } from './Calendar.jsx';
-import { lessons as seniorLessons} from './senior.js';
-import { lessons as juniorLessons } from './junior.js';
-import { lessons as beginnerLessons} from './beginner_curriculum.js';
+import { lessons as getLessons } from './curriculum.js';
 import { Link, useLocation } from 'react-router-dom';
 import CopySchedule from './CopySchedule.jsx';
 
@@ -185,20 +183,7 @@ export default function WeeklySchedule() {
   const [ lessons, setLessons ] = useState([])
     useEffect(() => {
       async function fetchLessons() {
-        let arr = [];
-        switch (division){
-          case 'senior':
-            arr = await seniorLessons;
-            break;
-          case 'junior':
-            arr = await juniorLessons;
-            break;
-          case 'beginner':
-            arr = await beginnerLessons;
-            break;
-          default:
-            arr = await seniorLessons;
-        }
+        const arr = await getLessons(division);
         setLessons(arr);
       }
       if (division) fetchLessons();

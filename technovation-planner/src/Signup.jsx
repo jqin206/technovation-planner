@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { auth, db, createUserWithEmailAndPassword, collection, addDoc } from './configuration';
+import { auth, db, createUserWithEmailAndPassword, getDoc, doc } from './configuration';
 import './Signup.css'
 import { setDoc } from 'firebase/firestore';
 
@@ -43,22 +43,32 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const limitDate = new Date('2025-05-05');
-        const enteredDate = new Date(formData.submission);
+        const deadlineRef = doc(db, 'submission', 'deadline');
+        const deadlineSnap = await getDoc(deadlineRef);
+        if (deadlineSnap.exists()) {
+            const deadlineData = deadlineSnap.data();
+            const deadline = deadlineData.date;
+
+            const limitDate = new Date(deadline + 'T17:00:00-07:00');
+            const enteredDate = new Date(formData.submission + 'T17:00:00-07:00');
+
+            if (enteredDate > limitDate) {
+                setDateError(`Your team submission date must be before the program submission deadline of: ${ limitDate.toDateString() }.`);
+                return; 
+            }
+            setDateError('');
+        } else {
+            console.log("No such document!")
+        }
 
         if (formData.accountType === 'Mentor' && (formData.numTeams < 1 || formData.numTeams > 5)) {
             setTeamNumError('Mentors must have between 1 and 5 teams.');
             return;
         }
         setTeamNumError('');
-        if (enteredDate > limitDate) {
-            setDateError('Your team submission date must be before the program submission deadline of May 5th, 2025.');
-            return; 
-        }
-        setDateError('');
 
         try {
-            await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+            const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
             const user = userCredential.user;
 
             await setDoc(doc(db, "users", user.uid), {
@@ -75,13 +85,10 @@ function Signup() {
                 createdAt: new Date()
             });
             // redirect the user to the calendar page after successful signup
-            if (accountType === 'Student') {
-                navigate('/calendar');
-            }
-            if (accountType === 'Mentor') {
-                navigate('/teams');
-            }
-        } catch (error) {
+            if (accountType === 'Student')
+                navigate('/calendar'); 
+            else if (accountType === 'Mentor')
+                navigate('/teams');        } catch (error) {
             // Handle registration errors (e.g., display an error message)
             console.error("Error creating user:", error);
             alert("Registration failed: " + error.message);
@@ -239,6 +246,7 @@ function Signup() {
                         Start Date
                         <input 
                             type="date"
+                            name="start"
                             id="start"
                             value={formData.start}
                             onChange={handleChange}
@@ -249,6 +257,7 @@ function Signup() {
                         Submission Deadline
                         <input
                             type="date"
+                            name="submission"
                             id="submission"
                             value={formData.submission}
                             onChange={handleChange}

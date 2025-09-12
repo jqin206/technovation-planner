@@ -1,11 +1,14 @@
 import { db, collection, query, orderBy, getDocs } from './configuration';
 
-const collectionRef = collection(db, 'beginner_curriculum');
-const q = query(collectionRef, orderBy('unit', 'asc'), orderBy('order', 'asc'));
+export async function lessons(division) {
+    const collectionRef = collection(db, `${division}_curriculum`);
+    const q = query(collectionRef, orderBy('unit', 'asc'), orderBy('order', 'asc'));
 
-export const lessons = getDocs(q)
-    .then((snap) => 
-        snap.docs.map((doc) => {
+    try {
+        const snap = await getDocs(q);
+        console.log("Snapshot: ", snap);
+        console.log("Docs: ", snap.docs);
+        return snap.docs.map((doc) => {
             const data = doc.data();
             return {
                 title: data.title,
@@ -16,9 +19,9 @@ export const lessons = getDocs(q)
                 unit: data.unit,
                 order: data.order,
             };
-        })
-    )
-    .catch ((error) => {
+        });
+    } catch (error) {
         console.error("Error fetching curriculum: ", error);
         return [];
-    });
+    };
+}

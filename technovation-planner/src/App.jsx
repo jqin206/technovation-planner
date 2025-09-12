@@ -17,6 +17,8 @@ import AdminCurriculumDivisions from './AdminCurriculumDivisions'
 import AdminBeginner from './AdminBeginner'
 import AdminJunior from './AdminJunior'
 import AdminSenior from './AdminSenior'
+import Teams from './Teams.jsx'
+import MentorAccount from './MentorAccount'
 import './index.css';
 import { AuthProvider } from './AuthContext';
 
@@ -41,6 +43,8 @@ const App = () => {
         <Route path="/admin/curriculumdivisions/beginner" element={<AdminBeginner />} />
         <Route path="/admin/curriculumdivisions/junior" element={<AdminJunior />} />
         <Route path="/admin/curriculumdivisions/senior" element={<AdminSenior />} />
+        <Route path="/teams" element={<Teams />} />
+        <Route path="/mentoraccount" element={<MentorAccount />} />
       </Routes>
   </AuthProvider>
   );
